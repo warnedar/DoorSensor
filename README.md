@@ -1,1 +1,2 @@
 # DoorSensor
+Authors: Daryl Warner
