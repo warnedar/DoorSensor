@@ -15,7 +15,7 @@ fprintf("min: %d, max: %d\n", min(mp3_data_raw_norm), max(mp3_data_raw_norm));
 
 sound_bit_depth = 8;
 
-DAC_data_15000 = round(mp3_data_raw_norm * 2^(sound_bit_depth));
+DAC_data_15000 = round(mp3_data_raw_norm * (2^(sound_bit_depth) - 1));
 
 % sound(DAC_data_15000,new_Fs,sound_bit_depth);
 
