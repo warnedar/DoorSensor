@@ -73,6 +73,7 @@ int main(void)
 	
 	doorSensor_init();
 	
+	System_Sleep()	
   while (1)
   {
 		

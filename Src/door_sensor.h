@@ -39,4 +39,8 @@ void GPIO_Init(void);
 
 void State_Init(void);
 
+void Power_Init(void);
+
+void System_Sleep(void);
+
 #endif /* DOOR_SENSOR_H_ */

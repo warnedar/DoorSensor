@@ -46,12 +46,19 @@ void TIM2_IRQHandler(void)
 	doorSensor_tick();
 	blueLED_tick();
 	TIM2->SR		&= ~(1 << 0); // Acknoledge interrupt
+	if(!doorSensorRunning_flag)
+	{
+		System_Sleep();
+	}
+	
+
 }
 
 void EXTI0_1_IRQHandler(void)
 {
 	GPIOC->ODR ^= (1 << GREEN_LED_PC);
 	doorSensorRunning_flag = 1;
+	DAC->CR |= DAC_CR_EN1; //enable DAC on wakeup
 	EXTI->PR |= EXTI_PR_PR0;
 }
 
@@ -63,6 +70,7 @@ void doorSensor_init(void)
 	Timers_Init();
 	DAC_Init();
 	State_Init();
+	Power_Init();
 }
 
 // will return 1 if currently running, 0 otherwise
@@ -255,3 +263,16 @@ void State_Init(void)
 	TIM2->CR1 	|= 	TIM_CR1_CEN; // Enable TIM2
 }
 
+void Power_Init(void)
+{
+	//Stop all clocks and wait on EXTI interrupt
+	PWR->CR &= (PWR_CR_LPDS | PWR_CR_PDDS); //stop mode, voltage regulator on
+}
+
+void System_Sleep(void)
+{
+	DAC->CR &= DAC_CR_EN1; //need to stop DAC, or it will continue to consume power
+	SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk | SCB_SCR_SLEEPONEXIT_Msk; //sleep on exit may not be needed
+	
+	__WFI();
+}
