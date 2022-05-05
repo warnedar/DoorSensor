@@ -48,7 +48,7 @@ void TIM2_IRQHandler(void)
 	TIM2->SR		&= ~(1 << 0); // Acknoledge interrupt
 	if(!doorSensorRunning_flag)
 	{
-		System_Sleep();
+//		System_Sleep();
 	}
 	
 
@@ -70,7 +70,7 @@ void doorSensor_init(void)
 	Timers_Init();
 	DAC_Init();
 	State_Init();
-	Power_Init();
+//	Power_Init();
 }
 
 // will return 1 if currently running, 0 otherwise
